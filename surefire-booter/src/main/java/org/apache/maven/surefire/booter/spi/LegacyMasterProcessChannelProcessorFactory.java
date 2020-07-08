@@ -22,17 +22,11 @@ package org.apache.maven.surefire.booter.spi;
 import org.apache.maven.surefire.api.booter.MasterProcessChannelDecoder;
 import org.apache.maven.surefire.api.booter.MasterProcessChannelEncoder;
 import org.apache.maven.surefire.api.util.internal.WritableBufferedByteChannel;
-import org.apache.maven.surefire.spi.MasterProcessChannelProcessorFactory;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.nio.ByteBuffer;
-import java.util.concurrent.ScheduledExecutorService;
 
-import static java.util.concurrent.Executors.newScheduledThreadPool;
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.apache.maven.surefire.api.util.internal.Channels.newBufferedChannel;
-import static org.apache.maven.surefire.api.util.internal.DaemonThreadFactory.newDaemonThreadFactory;
 
 /**
  * Producer of encoder and decoder for process pipes.
@@ -42,15 +36,8 @@ import static org.apache.maven.surefire.api.util.internal.DaemonThreadFactory.ne
  * @since 3.0.0-M5
  */
 public class LegacyMasterProcessChannelProcessorFactory
-    implements MasterProcessChannelProcessorFactory
+    extends AbstractMasterProcessChannelProcessorFactory
 {
-    private final ScheduledExecutorService flusher;
-
-    public LegacyMasterProcessChannelProcessorFactory()
-    {
-        flusher = newScheduledThreadPool( 1, newDaemonThreadFactory() );
-    }
-
     @Override
     public boolean canUse( String channelConfig )
     {
@@ -73,31 +60,11 @@ public class LegacyMasterProcessChannelProcessorFactory
     }
 
     @Override
+    @SuppressWarnings( "checkstyle:magicnumber" )
     public MasterProcessChannelEncoder createEncoder()
     {
-        final WritableBufferedByteChannel channel = newBufferedChannel( System.out );
-        flusher.scheduleWithFixedDelay( new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                try
-                {
-                    channel.write( ByteBuffer.wrap( new byte[] {'\n'} ) );
-                }
-                catch ( IOException e )
-                {
-                    // cannot do anything about this I/O issue
-                }
-            }
-        }, 0L, 100, MILLISECONDS );
-
+        WritableBufferedByteChannel channel = newBufferedChannel( System.out );
+        schedulePeriodicFlusher( 200, channel );
         return new LegacyMasterProcessChannelEncoder( channel );
-    }
-
-    @Override
-    public void close()
-    {
-        flusher.shutdown();
     }
 }
