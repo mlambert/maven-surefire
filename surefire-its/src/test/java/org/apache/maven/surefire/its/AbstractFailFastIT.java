@@ -120,8 +120,16 @@ public abstract class AbstractFailFastIT
     public void test() throws Exception
     {
         String cls = useProcessPipes ? LEGACY_FORK_NODE : SUREFIRE_FORK_NODE;
+        OutputValidator validator =
         prepare( description, profile, properties )
             .assertTestSuiteResults( total, errors, failures, skipped )
             .assertThatLogLine( containsString( "Found implementation of fork node factory: " + cls ), equalTo( 1 ) );
+        if ( description.equals( "junit47-twoForks-ff1" ) )
+        {
+            for ( String line : validator.loadLogLines() )
+            {
+                System.out.println( line );
+            }
+        }
     }
 }
