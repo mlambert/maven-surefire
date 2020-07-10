@@ -55,10 +55,10 @@ public class JUnit5ConsoleOutputReporter
 
     @Override
     public ConsoleOutputReportEventListener createListener( File reportsDirectory, String reportNameSuffix,
-                                                            Integer forkNumber )
+                                                            Integer forkNumber, boolean outputWithForkNumber )
     {
         return new ConsoleOutputFileReporter( reportsDirectory, reportNameSuffix, isUsePhrasedFileName(), forkNumber,
-                getEncoding() );
+            outputWithForkNumber, getEncoding() );
     }
 
     @Override

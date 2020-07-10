@@ -163,7 +163,8 @@ public class ForkStarterTest
         ForkStarter forkStarter = new ForkStarter( providerConfiguration, startupConfiguration, forkConfiguration,
             0, startupReportConfiguration, logger );
 
-        DefaultReporterFactory reporterFactory = new DefaultReporterFactory( startupReportConfiguration, logger, 1 );
+        DefaultReporterFactory reporterFactory = new DefaultReporterFactory( startupReportConfiguration, logger, 1,
+            false );
 
         e.expect( SurefireBooterForkException.class );
         e.expectMessage( containsString( "Process Exit Code: 1" ) );
@@ -222,7 +223,8 @@ public class ForkStarterTest
         ForkStarter forkStarter = new ForkStarter( providerConfiguration, startupConfiguration, forkConfiguration,
             0, startupReportConfiguration, logger );
 
-        DefaultReporterFactory reporterFactory = new DefaultReporterFactory( startupReportConfiguration, logger, 1 );
+        DefaultReporterFactory reporterFactory = new DefaultReporterFactory( startupReportConfiguration, logger, 1,
+            false );
 
         Class<?>[] types = {Object.class, PropertiesWrapper.class, ForkClient.class, SurefireProperties.class,
             int.class, AbstractCommandReader.class, ForkNodeFactory.class, boolean.class};

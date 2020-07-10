@@ -52,7 +52,8 @@ public class ConsoleOutputFileReporterTest
         reportDir.mkdirs();
         TestSetReportEntry reportEntry =
                 new SimpleReportEntry( getClass().getName(), null, getClass().getName(), null );
-        ConsoleOutputFileReporter reporter = new ConsoleOutputFileReporter( reportDir, null, false, null, "UTF-8" );
+        ConsoleOutputFileReporter reporter = new ConsoleOutputFileReporter( reportDir, null, false, null, false,
+                "UTF-8" );
         reporter.testSetStarting( reportEntry );
         reporter.writeTestOutput( "some ", false, true );
         reporter.testSetCompleted( reportEntry );
@@ -80,7 +81,8 @@ public class ConsoleOutputFileReporterTest
         TestSetReportEntry reportEntry =
                 new SimpleReportEntry( getClass().getName(), null, getClass().getName(), null );
         ConsoleOutputFileReporter reporter =
-                new ConsoleOutputFileReporter( reportDir, suffixText, false, null, "UTF-8" );
+                new ConsoleOutputFileReporter( reportDir, suffixText, false, null, false,
+                    "UTF-8" );
         reporter.testSetStarting( reportEntry );
         reporter.writeTestOutput( null, true, true );
         reporter.writeTestOutput( "some ", true, true );
@@ -102,10 +104,76 @@ public class ConsoleOutputFileReporterTest
         expectedReportFile.delete();
     }
 
+    /*
+     * Test method for 'org.codehaus.surefire.report.ConsoleOutputFileReporter.testSetCompleted(ReportEntry report)'
+     */
+    public void testForkedAndOutputWithForkNumber() throws IOException
+    {
+        File reportDir = new File( new File( System.getProperty( "user.dir" ), "target" ), "tmp2" );
+        String suffixText = "sampleSuffixText";
+        TestSetReportEntry reportEntry = new SimpleReportEntry( getClass().getName(), null, getClass().getName(),
+            null );
+        ConsoleOutputFileReporter reporter = new ConsoleOutputFileReporter( reportDir, suffixText, false, 7, true,
+                 "UTF-8" );
+        reporter.testSetStarting( reportEntry );
+        reporter.writeTestOutput( null, true, true );
+        reporter.writeTestOutput( "some ", true, true );
+        reporter.testSetCompleted( reportEntry );
+        reporter.close();
+
+        File expectedReportFile = new File( reportDir, getClass().getName() + "-" + suffixText + "-output.txt" );
+
+        assertTrue( "Report file (" + expectedReportFile.getAbsolutePath() + ") doesn't exist",
+                expectedReportFile.exists() );
+
+        assertThat( FileUtils.fileRead( expectedReportFile, US_ASCII.name() ) )
+                .contains( "some " );
+
+        final int expectedDataSize = 27 + 2 * System.lineSeparator().length();
+
+        assertThat( expectedReportFile )
+                .hasSize( expectedDataSize );
+
+        //noinspection ResultOfMethodCallIgnored
+        expectedReportFile.delete();
+    }
+
+    /*
+     * Test method for 'org.codehaus.surefire.report.ConsoleOutputFileReporter.testSetCompleted(ReportEntry report)'
+     */
+    public void testNonForkedAndOutputWithForkNumber() throws IOException
+    {
+        File reportDir = new File( new File( System.getProperty( "user.dir" ), "target" ), "tmp2" );
+        String suffixText = "sampleSuffixText";
+        TestSetReportEntry reportEntry = new SimpleReportEntry( getClass().getName(), null, getClass().getName(),
+            null );
+        ConsoleOutputFileReporter reporter = new ConsoleOutputFileReporter( reportDir, suffixText, false, null, true,
+            "UTF-8" );
+        reporter.testSetStarting( reportEntry );
+        reporter.writeTestOutput( null, true, true );
+        reporter.writeTestOutput( "some ", true, true );
+        reporter.testSetCompleted( reportEntry );
+        reporter.close();
+
+        File expectedReportFile = new File( reportDir, getClass().getName() + "-" + suffixText + "-output.txt" );
+
+        assertTrue( "Report file (" + expectedReportFile.getAbsolutePath() + ") doesn't exist",
+                expectedReportFile.exists() );
+
+        assertThat( FileUtils.fileRead( expectedReportFile, US_ASCII.name() ) ).contains( "some " );
+
+        assertThat( expectedReportFile )
+                .hasSize( 9 + 2 * System.lineSeparator().length() );
+
+        //noinspection ResultOfMethodCallIgnored
+        expectedReportFile.delete();
+    }
+
     public void testNullReportFile() throws IOException
     {
         File reportDir = new File( new File( System.getProperty( "user.dir" ), "target" ), "tmp3" );
-        ConsoleOutputFileReporter reporter = new ConsoleOutputFileReporter( reportDir, null, false, null, "UTF-8" );
+        ConsoleOutputFileReporter reporter = new ConsoleOutputFileReporter( reportDir, null, false, null, false,
+                "UTF-8" );
         reporter.writeTestOutput( "some text", false, true );
         reporter.testSetCompleted( new SimpleReportEntry( getClass().getName(), null, getClass().getName(), null ) );
         reporter.close();
@@ -126,7 +194,7 @@ public class ConsoleOutputFileReporterTest
     {
         File reportDir = new File( new File( System.getProperty( "user.dir" ), "target" ), "tmp4" );
         final ConsoleOutputFileReporter reporter =
-                new ConsoleOutputFileReporter( reportDir, null, false, null, "UTF-8" );
+                new ConsoleOutputFileReporter( reportDir, null, false, null, false, "UTF-8" );
         reporter.testSetStarting( new SimpleReportEntry( getClass().getName(), null, getClass().getName(), null ) );
         ExecutorService scheduler = Executors.newFixedThreadPool( 10 );
         final ArrayList<Callable<Void>> jobs = new ArrayList<>();

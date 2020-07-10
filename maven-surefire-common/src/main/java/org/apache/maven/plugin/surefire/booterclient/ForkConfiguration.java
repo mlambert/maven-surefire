@@ -51,6 +51,7 @@ public abstract class ForkConfiguration
     protected abstract boolean isDebug();
     protected abstract int getForkCount();
     protected abstract boolean isReuseForks();
+    protected abstract boolean isOutputWithForkNumber();
     @Nonnull protected abstract Platform getPluginPlatform();
     @Nonnull protected abstract JdkAttributes getJdkForTests();
     @Nonnull protected abstract Classpath getBooterClasspath();

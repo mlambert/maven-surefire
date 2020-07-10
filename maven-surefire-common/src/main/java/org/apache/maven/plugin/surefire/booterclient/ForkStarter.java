@@ -300,7 +300,8 @@ public class ForkStarter
         {
             addShutDownHook( shutdown );
             DefaultReporterFactory forkedReporterFactory =
-                    new DefaultReporterFactory( startupReportConfiguration, log, forkNumber );
+                    new DefaultReporterFactory( startupReportConfiguration, log, forkNumber,
+                        forkConfiguration.isOutputWithForkNumber() );
             defaultReporterFactories.add( forkedReporterFactory );
             ForkClient forkClient = new ForkClient( forkedReporterFactory, stream, forkNumber );
             return fork( null, props, forkClient, effectiveSystemProperties, forkNumber, stream,
@@ -375,7 +376,8 @@ public class ForkStarter
                     {
                         int forkNumber = drawNumber();
                         DefaultReporterFactory reporter =
-                                new DefaultReporterFactory( startupReportConfiguration, log, forkNumber );
+                                new DefaultReporterFactory( startupReportConfiguration, log, forkNumber,
+                                    forkConfiguration.isOutputWithForkNumber() );
                         defaultReporterFactories.add( reporter );
                         ForkClient forkClient = new ForkClient( reporter, testProvidingInputStream, forkNumber )
                         {
@@ -447,7 +449,8 @@ public class ForkStarter
                     {
                         int forkNumber = drawNumber();
                         DefaultReporterFactory forkedReporterFactory =
-                            new DefaultReporterFactory( startupReportConfiguration, log, forkNumber );
+                            new DefaultReporterFactory( startupReportConfiguration, log, forkNumber,
+                                forkConfiguration.isOutputWithForkNumber() );
                         defaultReporterFactories.add( forkedReporterFactory );
                         TestLessInputStream stream = builder.build();
                         ForkClient forkClient = new ForkClient( forkedReporterFactory, stream, forkNumber )

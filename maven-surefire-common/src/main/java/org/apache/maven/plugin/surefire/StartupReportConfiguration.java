@@ -201,10 +201,12 @@ public final class StartupReportConfiguration
         return BRIEF.equals( fmt ) || PLAIN.equals( fmt );
     }
 
-    public ConsoleOutputReportEventListener instantiateConsoleOutputFileReporter( Integer forkNum )
+    public ConsoleOutputReportEventListener instantiateConsoleOutputFileReporter(
+            Integer forkNum, boolean outputWithForkNumber )
     {
         ConsoleOutputReportEventListener outputReport = isRedirectTestOutputToFile()
-                ? consoleOutputReporter.createListener( resolveReportsDirectory( forkNum ), reportNameSuffix, forkNum )
+                ? consoleOutputReporter
+            .createListener( resolveReportsDirectory( forkNum ), reportNameSuffix, forkNum, outputWithForkNumber )
                 : consoleOutputReporter.createListener( originalSystemOut, originalSystemErr );
         return consoleOutputReporter.isDisable() ? null : outputReport;
     }

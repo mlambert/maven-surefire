@@ -43,9 +43,10 @@ public class SurefireConsoleOutputReporter
 {
     @Override
     public ConsoleOutputReportEventListener createListener( File reportsDirectory, String reportNameSuffix,
-                                                            Integer forkNumber )
+                                                            Integer forkNumber, boolean outWithForkNumber )
     {
-        return new ConsoleOutputFileReporter( reportsDirectory, reportNameSuffix, false, forkNumber, getEncoding() );
+        return new ConsoleOutputFileReporter( reportsDirectory, reportNameSuffix, false, forkNumber, outWithForkNumber,
+            getEncoding() );
     }
 
     @Override

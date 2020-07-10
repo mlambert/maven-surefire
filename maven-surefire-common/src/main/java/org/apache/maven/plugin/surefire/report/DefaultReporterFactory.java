@@ -71,6 +71,7 @@ public class DefaultReporterFactory
     private final StartupReportConfiguration reportConfiguration;
     private final ConsoleLogger consoleLogger;
     private final Integer forkNumber;
+    private final boolean outputWithForkNumber;
 
     private RunStatistics globalStats = new RunStatistics();
 
@@ -85,15 +86,16 @@ public class DefaultReporterFactory
 
     public DefaultReporterFactory( StartupReportConfiguration reportConfiguration, ConsoleLogger consoleLogger )
     {
-        this( reportConfiguration, consoleLogger, null );
+        this( reportConfiguration, consoleLogger, null, false );
     }
 
     public DefaultReporterFactory( StartupReportConfiguration reportConfiguration, ConsoleLogger consoleLogger,
-                                   Integer forkNumber )
+                                   Integer forkNumber, boolean outputWithForkNumber )
     {
         this.reportConfiguration = reportConfiguration;
         this.consoleLogger = consoleLogger;
         this.forkNumber = forkNumber;
+        this.outputWithForkNumber = outputWithForkNumber;
     }
 
     @Override
@@ -141,7 +143,7 @@ public class DefaultReporterFactory
     private ConsoleOutputReportEventListener createConsoleOutputReceiver()
     {
         ConsoleOutputReportEventListener outputReporter =
-                reportConfiguration.instantiateConsoleOutputFileReporter( forkNumber );
+                reportConfiguration.instantiateConsoleOutputFileReporter( forkNumber, outputWithForkNumber );
         return useNonNull( outputReporter, NullConsoleOutputReceiver.INSTANCE );
     }
 

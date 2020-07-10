@@ -64,6 +64,7 @@ public abstract class DefaultForkConfiguration
     private final boolean debug;
     private final int forkCount;
     private final boolean reuseForks;
+    private final boolean outputWithForkNumber;
     @Nonnull private final Platform pluginPlatform;
     @Nonnull private final ConsoleLogger log;
     @Nonnull private final ForkNodeFactory forkNodeFactory;
@@ -80,6 +81,7 @@ public abstract class DefaultForkConfiguration
                                      boolean debug,
                                      int forkCount,
                                      boolean reuseForks,
+                                     boolean outputWithForkNumber,
                                      @Nonnull Platform pluginPlatform,
                                      @Nonnull ConsoleLogger log,
                                      @Nonnull ForkNodeFactory forkNodeFactory )
@@ -95,6 +97,7 @@ public abstract class DefaultForkConfiguration
         this.debug = debug;
         this.forkCount = forkCount;
         this.reuseForks = reuseForks;
+        this.outputWithForkNumber = outputWithForkNumber;
         this.pluginPlatform = pluginPlatform;
         this.log = log;
         this.forkNodeFactory = forkNodeFactory;
@@ -327,6 +330,12 @@ public abstract class DefaultForkConfiguration
     protected boolean isReuseForks()
     {
         return reuseForks;
+    }
+
+    @Override
+    protected boolean isOutputWithForkNumber()
+    {
+        return outputWithForkNumber;
     }
 
     @Override

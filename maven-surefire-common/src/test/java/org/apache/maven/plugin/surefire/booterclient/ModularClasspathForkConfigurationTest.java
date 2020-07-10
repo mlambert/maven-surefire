@@ -67,7 +67,7 @@ public class ModularClasspathForkConfigurationTest
 
         ModularClasspathForkConfiguration config = new ModularClasspathForkConfiguration( booter, tmp, "", pwd,
                 new Properties(), "",
-                Collections.<String, String>emptyMap(), new String[0], true, 1, true,
+                Collections.<String, String>emptyMap(), new String[0], true, 1, true, false,
                 new Platform(), new NullConsoleLogger(), mock( ForkNodeFactory.class ) );
 
         File patchFile = new File( "target" + separatorChar + "test-classes" );

@@ -104,7 +104,7 @@ public class ForkConfigurationTest
         Platform platform = new Platform().withJdkExecAttributesForTests( new JdkAttributes( jvm, false ) );
 
         ForkConfiguration config = new DefaultForkConfiguration( emptyClasspath(), basedir, "", basedir,
-            new Properties(), "", env, exclEnv, false, 1, true,
+            new Properties(), "", env, exclEnv, false, 1, true, false,
             platform, new NullConsoleLogger(), mock( ForkNodeFactory.class ) )
         {
 
@@ -145,7 +145,7 @@ public class ForkConfigurationTest
 
         ModularClasspathForkConfiguration config = new ModularClasspathForkConfiguration( emptyClasspath(), basedir,
             "", basedir, new Properties(), "arg1", Collections.<String, String>emptyMap(), new String[0], false, 1,
-            true, platform, new NullConsoleLogger(), mock( ForkNodeFactory.class ) );
+            true, false, platform, new NullConsoleLogger(), mock( ForkNodeFactory.class ) );
 
         assertThat( config.isDebug() ).isFalse();
 
@@ -193,7 +193,7 @@ public class ForkConfigurationTest
 
         ForkConfiguration config = new DefaultForkConfiguration( emptyClasspath(), basedir,
             "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005", basedir, new Properties(), "",
-            Collections.<String, String>emptyMap(), new String[0], true, 1, true,
+            Collections.<String, String>emptyMap(), new String[0], true, 1, true, true,
             platform, logger, forkNodeFactory )
         {
 
@@ -395,7 +395,7 @@ public class ForkConfigurationTest
         return new JarManifestForkConfiguration( emptyClasspath(), tmpDir, null,
                 cwd, new Properties(), argLine,
                 Collections.<String, String>emptyMap(), new String[0], false, 1, false,
-                platform, new NullConsoleLogger(), mock( ForkNodeFactory.class ) );
+                false, platform, new NullConsoleLogger(), mock( ForkNodeFactory.class ) );
     }
 
     // based on http://stackoverflow.com/questions/2591083/getting-version-of-java-in-runtime

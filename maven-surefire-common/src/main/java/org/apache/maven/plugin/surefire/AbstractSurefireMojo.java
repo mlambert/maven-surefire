@@ -555,6 +555,13 @@ public abstract class AbstractSurefireMojo
     private boolean reuseForks;
 
     /**
+     * Indicates whether to include a fork prefix on log lines, e.g. [Fork 1] blah. This option only applies when {@code
+     * forkCount} is used.
+     */
+    @Parameter( property = "outputWithForkNumber", defaultValue = "false" )
+    private boolean outputWithForkNumber;
+
+    /**
      * (JUnit 4.7 provider) Indicates that threadCount, threadCountSuites, threadCountClasses, threadCountMethods
      * are per cpu core.
      *
@@ -2448,6 +2455,7 @@ public abstract class AbstractSurefireMojo
                     getConsoleLogger().isDebugEnabled(),
                     getEffectiveForkCount(),
                     reuseForks,
+                    outputWithForkNumber,
                     platform,
                     getConsoleLogger(),
                     forkNode );
@@ -2465,6 +2473,7 @@ public abstract class AbstractSurefireMojo
                     getConsoleLogger().isDebugEnabled(),
                     getEffectiveForkCount(),
                     reuseForks,
+                    outputWithForkNumber,
                     platform,
                     getConsoleLogger(),
                     forkNode );
@@ -2482,6 +2491,7 @@ public abstract class AbstractSurefireMojo
                     getConsoleLogger().isDebugEnabled(),
                     getEffectiveForkCount(),
                     reuseForks,
+                    outputWithForkNumber,
                     platform,
                     getConsoleLogger(),
                     forkNode );

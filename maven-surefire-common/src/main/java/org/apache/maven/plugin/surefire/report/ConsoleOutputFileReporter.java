@@ -54,6 +54,7 @@ public class ConsoleOutputFileReporter
     private final boolean usePhrasedFileName;
     private final Integer forkNumber;
     private final String encoding;
+    private final boolean outputWithForkNumber;
 
     private final AtomicStampedReference<FilterOutputStream> fileOutputStream =
             new AtomicStampedReference<>( null, OPEN );
@@ -63,12 +64,13 @@ public class ConsoleOutputFileReporter
     private volatile String reportEntryName;
 
     public ConsoleOutputFileReporter( File reportsDirectory, String reportNameSuffix, boolean usePhrasedFileName,
-                                      Integer forkNumber, String encoding )
+                                      Integer forkNumber, boolean outputWithForkNumber, String encoding )
     {
         this.reportsDirectory = reportsDirectory;
         this.reportNameSuffix = reportNameSuffix;
         this.usePhrasedFileName = usePhrasedFileName;
         this.forkNumber = forkNumber;
+        this.outputWithForkNumber = outputWithForkNumber;
         this.encoding = encoding;
     }
 
@@ -130,12 +132,27 @@ public class ConsoleOutputFileReporter
                     fileOutputStream.set( os, OPEN );
                 }
 
+                StringBuilder builder = new StringBuilder();
+
+                if ( outputWithForkNumber && forkNumber != null )
+                {
+                    builder.append( "[Fork " );
+                    builder.append( forkNumber );
+                    builder.append( "] " );
+                }
+
                 if ( output == null )
                 {
-                    output = "null";
+                    builder.append( "null" );
                 }
+                else
+                {
+                    builder.append( output );
+                }
+
                 Charset charset = Charset.forName( encoding );
-                os.write( output.getBytes( charset ) );
+                os.write( builder.toString().getBytes( charset ) );
+
                 if ( newLine )
                 {
                     os.write( NL.getBytes( charset ) );

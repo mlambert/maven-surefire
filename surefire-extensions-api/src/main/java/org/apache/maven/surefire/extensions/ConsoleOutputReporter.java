@@ -44,7 +44,7 @@ public abstract class ConsoleOutputReporter
     private String encoding;
 
     public abstract ConsoleOutputReportEventListener createListener( File reportsDirectory, String reportNameSuffix,
-                                                                     Integer forkNumber );
+                                                                     Integer forkNumber, boolean outputWithForkNumber );
 
     public abstract ConsoleOutputReportEventListener createListener( PrintStream out, PrintStream err );
 

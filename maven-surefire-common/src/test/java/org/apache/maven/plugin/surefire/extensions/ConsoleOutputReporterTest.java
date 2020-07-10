@@ -83,10 +83,11 @@ public class ConsoleOutputReporterTest
         String reportNameSuffix = "suffix";
         boolean usePhrasedFileName = false;
         Integer forkNumber = 1;
+        boolean outputWithForkNumber = false;
         String encoding = "ISO-8859-2";
         extension.setEncoding( encoding );
         ConsoleOutputReportEventListener listener2 =
-                extension.createListener( reportsDirectory, reportNameSuffix, forkNumber );
+                extension.createListener( reportsDirectory, reportNameSuffix, forkNumber, outputWithForkNumber );
         assertThat( listener2 )
                 .isInstanceOf( ConsoleOutputFileReporter.class );
         assertThat( getInternalState( listener2, "reportsDirectory" ) )
@@ -152,11 +153,13 @@ public class ConsoleOutputReporterTest
         String reportNameSuffix = "suffix";
         boolean usePhrasedFileName = true;
         Integer forkNumber = 1;
+        boolean outputWithForkNumber = true;
+
         String encoding = "ISO-8859-1";
         extension.setEncoding( encoding );
         extension.setUsePhrasedFileName( usePhrasedFileName );
         ConsoleOutputReportEventListener listener2 =
-                extension.createListener( reportsDirectory, reportNameSuffix, forkNumber );
+                extension.createListener( reportsDirectory, reportNameSuffix, forkNumber, outputWithForkNumber );
         assertThat( listener2 )
                 .isInstanceOf( ConsoleOutputFileReporter.class );
         assertThat( getInternalState( listener2, "reportsDirectory" ) )

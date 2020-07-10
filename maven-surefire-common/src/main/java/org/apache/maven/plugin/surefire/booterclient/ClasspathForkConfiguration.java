@@ -48,13 +48,13 @@ public final class ClasspathForkConfiguration
                                        @Nonnull Map<String, String> environmentVariables,
                                        @Nonnull String[] excludedEnvironmentVariables,
                                        boolean debug, int forkCount,
-                                       boolean reuseForks, @Nonnull Platform pluginPlatform,
-                                       @Nonnull ConsoleLogger log,
+                                       boolean reuseForks, boolean outputWithForkNumber,
+                                       @Nonnull Platform pluginPlatform, @Nonnull ConsoleLogger log,
                                        @Nonnull ForkNodeFactory forkNodeFactory )
     {
         super( bootClasspath, tempDirectory, debugLine, workingDirectory, modelProperties, argLine,
-            environmentVariables, excludedEnvironmentVariables, debug, forkCount, reuseForks, pluginPlatform, log,
-            forkNodeFactory );
+            environmentVariables, excludedEnvironmentVariables, debug, forkCount, reuseForks, outputWithForkNumber,
+            pluginPlatform, log, forkNodeFactory );
     }
 
     @Override
